@@ -24,7 +24,7 @@ fn main() -> wry::Result<()> {
     target_os = "windows",
     target_os = "macos",
     target_os = "ios",
-    target_os = "android"
+    any()
   )))]
   let (fixed, _) = {
     use gtk::prelude::*;
@@ -195,7 +195,7 @@ fn main() -> wry::Result<()> {
     target_os = "windows",
     target_os = "macos",
     target_os = "ios",
-    target_os = "android"
+    any()
   ))]
   let webview = builder.build(&window)?;
 
@@ -203,7 +203,7 @@ fn main() -> wry::Result<()> {
     target_os = "windows",
     target_os = "macos",
     target_os = "ios",
-    target_os = "android"
+    any()
   )))]
   let webview = {
     use wry::WebViewBuilderExtUnix;

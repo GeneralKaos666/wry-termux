@@ -301,7 +301,7 @@ fn main() -> Result<()> {
     ..Default::default()
   };
 
-  if cfg!(target_os = "linux") {
+  if cfg!(any(target_os = "linux", target_os = "android")) {
     run_strace_benchmarks(&mut new_data)?;
     new_data.max_memory = run_max_mem_benchmark()?;
   }

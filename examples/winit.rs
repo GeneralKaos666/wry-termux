@@ -56,7 +56,7 @@ impl ApplicationHandler for State {
 
   fn about_to_wait(&mut self, _event_loop: &ActiveEventLoop) {
     #[cfg(any(
-      target_os = "linux",
+      target_os = "linux", target_os = "android",
       target_os = "dragonfly",
       target_os = "freebsd",
       target_os = "netbsd",
@@ -72,7 +72,7 @@ impl ApplicationHandler for State {
 
 fn main() -> wry::Result<()> {
   #[cfg(any(
-    target_os = "linux",
+    target_os = "linux", target_os = "android",
     target_os = "dragonfly",
     target_os = "freebsd",
     target_os = "netbsd",

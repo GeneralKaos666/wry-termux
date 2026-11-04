@@ -115,13 +115,15 @@ fn main() {
   }
 
   let target = std::env::var("TARGET").unwrap_or_default();
-  let android = target.contains("android");
-  let linux = !android
-    && (target.contains("linux")
-      || target.contains("freebsd")
-      || target.contains("dragonfly")
-      || target.contains("netbsd")
-      || target.contains("openbsd"));
+  // Termux builds the GTK backend on the android target, so android counts as
+  // a desktop target here. The Android app backend never compiles: the
+  // `target_os = "android"` conditions are rewritten to `any()`.
+  let linux = target.contains("linux")
+    || target.contains("freebsd")
+    || target.contains("dragonfly")
+    || target.contains("netbsd")
+    || target.contains("openbsd")
+    || target.contains("android");
   alias("linux", linux);
   alias("gtk", cfg!(feature = "os-webview") && linux);
 }

@@ -28,7 +28,7 @@ pub enum Error {
   NulError(#[from] std::ffi::NulError),
   #[error(transparent)]
   ReceiverError(#[from] std::sync::mpsc::RecvError),
-  #[cfg(target_os = "android")]
+  #[cfg(any())]
   #[error(transparent)]
   ReceiverTimeoutError(#[from] crossbeam_channel::RecvTimeoutError),
   #[error(transparent)]
@@ -44,7 +44,7 @@ pub enum Error {
   HttpError(#[from] http::Error),
   #[error("Infallible error, something went really wrong: {0}")]
   Infallible(#[from] std::convert::Infallible),
-  #[cfg(target_os = "android")]
+  #[cfg(any())]
   #[error(transparent)]
   JniError(#[from] jni::errors::Error),
   #[error("Failed to create proxy endpoint")]
@@ -55,7 +55,7 @@ pub enum Error {
   UnsupportedWindowHandle,
   #[error(transparent)]
   Utf8Error(#[from] std::str::Utf8Error),
-  #[cfg(target_os = "android")]
+  #[cfg(any())]
   #[error(transparent)]
   CrossBeamRecvError(#[from] crossbeam_channel::RecvError),
   #[error("not on the main thread")]
@@ -76,7 +76,7 @@ pub enum Error {
   #[cfg(any(target_os = "macos", target_os = "ios"))]
   #[error("data store is currently opened")]
   DataStoreInUse,
-  #[cfg(target_os = "android")]
+  #[cfg(any())]
   #[error("Activity not found")]
   ActivityNotFound,
 }

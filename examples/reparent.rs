@@ -19,13 +19,13 @@ use {tao::platform::windows::WindowExtWindows, wry::WebViewExtWindows};
   target_os = "windows",
   target_os = "macos",
   target_os = "ios",
-  target_os = "android"
+  any()
 )))]
 #[cfg(not(any(
   target_os = "windows",
   target_os = "macos",
   target_os = "ios",
-  target_os = "android"
+  any()
 )))]
 use {
   tao::platform::unix::WindowExtUnix,
@@ -43,14 +43,14 @@ fn main() -> wry::Result<()> {
     target_os = "windows",
     target_os = "macos",
     target_os = "ios",
-    target_os = "android"
+    any()
   ))]
   let webview = builder.build(&window)?;
   #[cfg(not(any(
     target_os = "windows",
     target_os = "macos",
     target_os = "ios",
-    target_os = "android"
+    any()
   )))]
   let webview = {
     use tao::platform::unix::WindowExtUnix;
@@ -97,7 +97,7 @@ fn main() -> wry::Result<()> {
           target_os = "windows",
           target_os = "macos",
           target_os = "ios",
-          target_os = "android"
+          any()
         )))]
         webview
           .reparent(new_parent.default_vbox().unwrap())

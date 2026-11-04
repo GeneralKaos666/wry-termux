@@ -342,29 +342,29 @@
 // #[macro_use]
 // extern crate objc;
 
-#[cfg(any(target_os = "windows", target_os = "android"))]
+#[cfg(any(target_os = "windows", any()))]
 mod custom_protocol_workaround;
 mod error;
-#[cfg(any(target_os = "android", test))]
+#[cfg(any(any(), test))]
 mod inject_initialization_scripts;
 mod permissions;
 mod proxy;
-#[cfg(any(target_os = "macos", target_os = "android", target_os = "ios"))]
+#[cfg(any(target_os = "macos", any(), target_os = "ios"))]
 mod util;
 mod web_context;
 
-#[cfg(target_os = "android")]
+#[cfg(any())]
 pub(crate) mod android;
-#[cfg(target_os = "android")]
+#[cfg(any())]
 pub use crate::android::android_setup;
-#[cfg(target_os = "android")]
+#[cfg(any())]
 pub mod prelude {
   pub use crate::android::{Context, binding::*, dispatch, find_class};
   pub use tao_macros::{android_fn, generate_package_name};
 }
-#[cfg(target_os = "android")]
+#[cfg(any())]
 pub use android::JniHandle;
-#[cfg(target_os = "android")]
+#[cfg(any())]
 use android::*;
 
 #[cfg(gtk)]
@@ -466,10 +466,10 @@ pub enum NewWindowResponse {
   /// **Linux**: The webview must be related to the caller webview. See [`WebViewBuilderExtUnix::with_related_view`].
   /// **Windows**: The webview must use the same environment as the caller webview. See [`WebViewBuilderExtWindows::with_environment`].
   /// **macOS**: The webview must use the same configuration as the caller webview. See [`WebViewBuilderExtMacos::with_webview_configuration`].
-  #[cfg(not(any(target_os = "android", target_os = "ios")))]
+  #[cfg(not(any(any(), target_os = "ios")))]
   Create {
     #[cfg(any(
-      target_os = "linux",
+      target_os = "linux", target_os = "android",
       target_os = "dragonfly",
       target_os = "freebsd",
       target_os = "netbsd",
@@ -492,7 +492,7 @@ pub struct NewWindowOpener {
   ///
   /// This must be set as the related view of the new webview. See [`WebViewBuilderExtUnix::with_related_view`].
   #[cfg(any(
-    target_os = "linux",
+    target_os = "linux", target_os = "android",
     target_os = "dragonfly",
     target_os = "freebsd",
     target_os = "netbsd",
@@ -1078,7 +1078,7 @@ impl<'a> WebViewBuilder<'a> {
     F: Fn(WebViewId, Request<Vec<u8>>) -> Response<Cow<'static, [u8]>> + Send + Sync + 'static,
   {
     #[cfg(any(
-      target_os = "linux",
+      target_os = "linux", target_os = "android",
       target_os = "dragonfly",
       target_os = "freebsd",
       target_os = "netbsd",
@@ -1142,7 +1142,7 @@ impl<'a> WebViewBuilder<'a> {
     F: Fn(WebViewId, Request<Vec<u8>>, RequestAsyncResponder) + Send + Sync + 'static,
   {
     #[cfg(any(
-      target_os = "linux",
+      target_os = "linux", target_os = "android",
       target_os = "dragonfly",
       target_os = "freebsd",
       target_os = "netbsd",
@@ -1926,7 +1926,7 @@ impl WebViewBuilderExtWindows for WebViewBuilder<'_> {
   }
 }
 
-#[cfg(target_os = "android")]
+#[cfg(any())]
 #[derive(Default)]
 pub(crate) struct PlatformSpecificWebViewAttributes {
   on_webview_created: Option<
@@ -1941,7 +1941,7 @@ pub(crate) struct PlatformSpecificWebViewAttributes {
   https_scheme: bool,
 }
 
-#[cfg(target_os = "android")]
+#[cfg(any())]
 pub trait WebViewBuilderExtAndroid {
   fn on_webview_created<
     F: Fn(prelude::Context<'_, '_>) -> std::result::Result<(), jni::errors::Error>
@@ -1970,7 +1970,7 @@ pub trait WebViewBuilderExtAndroid {
   fn with_https_scheme(self, enabled: bool) -> Self;
 }
 
-#[cfg(target_os = "android")]
+#[cfg(any())]
 impl WebViewBuilderExtAndroid for WebViewBuilder<'_> {
   fn on_webview_created<
     F: Fn(prelude::Context<'_, '_>) -> std::result::Result<(), jni::errors::Error>
@@ -2006,7 +2006,7 @@ impl WebViewBuilderExtAndroid for WebViewBuilder<'_> {
 }
 
 #[cfg(any(
-  target_os = "linux",
+  target_os = "linux", target_os = "android",
   target_os = "dragonfly",
   target_os = "freebsd",
   target_os = "netbsd",
@@ -2019,7 +2019,7 @@ pub(crate) struct PlatformSpecificWebViewAttributes {
 }
 
 #[cfg(any(
-  target_os = "linux",
+  target_os = "linux", target_os = "android",
   target_os = "dragonfly",
   target_os = "freebsd",
   target_os = "netbsd",
@@ -2049,7 +2049,7 @@ pub trait WebViewBuilderExtUnix<'a> {
 }
 
 #[cfg(any(
-  target_os = "linux",
+  target_os = "linux", target_os = "android",
   target_os = "dragonfly",
   target_os = "freebsd",
   target_os = "netbsd",
@@ -2554,13 +2554,13 @@ impl WebViewExtIOS for WebView {
   }
 }
 
-#[cfg(target_os = "android")]
+#[cfg(any())]
 /// Additional methods on `WebView` that are specific to Android
 pub trait WebViewExtAndroid {
   fn handle(&self) -> JniHandle;
 }
 
-#[cfg(target_os = "android")]
+#[cfg(any())]
 impl WebViewExtAndroid for WebView {
   fn handle(&self) -> JniHandle {
     JniHandle {
